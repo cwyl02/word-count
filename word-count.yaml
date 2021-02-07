@@ -80,15 +80,16 @@ spec:
       labels:
         app: word-count
     spec:
-      serviceAccountname: word-count
-
+      serviceAccountName: word-count
+      containers:
         - name: word-count
           image: "word-count:0.0.1"
           imagePullPolicy: "IfNotPresent"
           args:
-            - --config=/etc/config/flask.cfg
+            []
           ports:
             - containerPort: 5000
+            - monitoringPort: 8080
           readinessProbe:
             httpGet:
               path: /
