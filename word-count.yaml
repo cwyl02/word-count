@@ -89,7 +89,9 @@ spec:
             []
           ports:
             - containerPort: 5000
-            - monitoringPort: 8080
+              name: main
+            - containerPort: 8080
+              name: monitoring
           readinessProbe:
             httpGet:
               path: /
