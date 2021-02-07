@@ -7,5 +7,7 @@ COPY server.py lib.py requirements.txt ./
 RUN ls
 RUN pip install -r requirements.txt
 
+EXPOSE 5000
+EXPOSE 8080
 ENV FLASK_APP=server.py
 ENTRYPOINT [ "flask", "run" ]

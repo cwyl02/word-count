@@ -60,6 +60,10 @@ spec:
       port: 80
       protocol: TCP
       targetPort: 5000
+    - name: monitor-http
+      port: 8080
+      protocol: TCP
+      targetPort: 8080
   selector:
     app: word-count
   type: "ClusterIP"
