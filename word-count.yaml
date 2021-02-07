@@ -93,12 +93,13 @@ spec:
       serviceAccountName: word-count
       containers:
         - name: word-count
-          image: "word-count:0.0.2"
+          image: "word-count:0.0.3"
           imagePullPolicy: "IfNotPresent"
           args:
-            []
+            ["--wsgi-file","server.py", "--callable", "app"]
           env:
-            - name: FLASK_RUN_HOST
+            #FLASK_RUN_HOST
+            - name: UWSGI_SOCKET 
               valueFrom:
                 fieldRef:
                   fieldPath: status.podIP
