@@ -93,7 +93,7 @@ spec:
       serviceAccountName: word-count
       containers:
         - name: word-count
-          image: "word-count:0.0.1"
+          image: "word-count:0.0.2"
           imagePullPolicy: "IfNotPresent"
           args:
             []
