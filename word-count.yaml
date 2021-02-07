@@ -27,8 +27,9 @@ metadata:
 rules:
   - apiGroups:
       - ""
+      - "extensions"
     resources:
-      - configmaps
+      - "configmaps"
     verbs:
       - get
       - list
