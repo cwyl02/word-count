@@ -98,10 +98,12 @@ spec:
           args:
             []
           env:
-            - name: MY_POD_IP
+            - name: FLASK_RUN_HOST
               valueFrom:
                 fieldRef:
                   fieldPath: status.podIP
+            - name: FILE_FORM_FIELD
+              value: data
           ports:
             - containerPort: 5000
               name: main
