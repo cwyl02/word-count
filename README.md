@@ -2,7 +2,6 @@
 An extremely useful little program helps you count number of words in a file
 
 # Assumptions
-- NOT addressing uWSGI / Python Web Server Production mode
 - the file has a "reasonable" line length
 - the file has a "reasonable" size
 - We use the split() function in python builtin to determine how many words in a given line here
@@ -26,7 +25,7 @@ curl -i "localhost:5000" -H "Content-Type: multipart/form-data" -F "data=@PATH_T
 # Build (Docker image)
 ```bash
 # substitute 0.0.1 to other build number to publish upgrade
-sudo docker build . -t word_count:0.0.1 
+sudo docker build . -t word_count:0.0.1
 ```
 
 # Test running a docker container locally
@@ -36,3 +35,8 @@ sudo docker run --network=host word_count:latest
 curl -i localhost:5000/
 ```
 
+# References
+
+Base docker images
+- https://github.com/tiangolo/meinheld-gunicorn-docker
+- https://github.com/tiangolo/meinheld-gunicorn-flask-docker

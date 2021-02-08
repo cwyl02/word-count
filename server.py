@@ -1,7 +1,5 @@
 from flask import Flask, request
 import os
-import sys
-import signal
 
 from werkzeug.middleware.dispatcher import DispatcherMiddleware
 from prometheus_client import make_wsgi_app
@@ -11,6 +9,7 @@ import lib
 
 
 app = Flask(__name__)
+# run Prometheus metric server
 app.wsgi_app = DispatcherMiddleware(app.wsgi_app, {
     '/metrics': make_wsgi_app()
 })
@@ -30,19 +29,3 @@ def count_words_from_upload():
         response['fileName'] = uploaded_file.filename
         
     return response
-
-### Non Flask
-# def handler():
-#     print("word-count service received SIGTERM! exiting...")
-#     sys.exit(1)
-
-# if __name__ == "__main__":
-#     # gracefully handle interrupt/termination
-#     signal.signal(signal.SIGINT, handler)
-#     signal.signal(signal.SIGTERM, handler)
-
-#     # start monitoring server
-    
-
-#     # start word count flask server
-#     app.run(port=5000)
