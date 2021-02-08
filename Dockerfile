@@ -14,7 +14,6 @@ RUN apk add --no-cache --virtual .build-deps gcc libc-dev linux-headers\
 
 RUN addgroup -S uwsgi &&  adduser -S uwsgi -G uwsgi
 RUN chown -R uwsgi:uwsgi /work-count
-EXPOSE 5000
 
 ENTRYPOINT ["uwsgi", "--ini", "uwsgi_static.ini"]
 # ENTRYPOINT ["./word-count/bin/uwsgi"]

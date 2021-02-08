@@ -60,10 +60,6 @@ spec:
       port: 80
       protocol: TCP
       targetPort: 5000
-    - name: monitor-http
-      port: 8080
-      protocol: TCP
-      targetPort: 8080
   selector:
     app: word-count
   type: "ClusterIP"
@@ -107,8 +103,6 @@ spec:
           ports:
             - containerPort: 5000
               name: main
-            - containerPort: 8080
-              name: monitoring
           readinessProbe:
             httpGet:
               path: /
@@ -139,7 +133,6 @@ spec:
             - name: config-volume
               mountPath: /etc/config
 
-      terminationGracePeriodSeconds: 300
       volumes:
         - name: config-volume
           configMap:
