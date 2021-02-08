@@ -85,20 +85,19 @@ spec:
       labels:
         app: word-count
       annotations:
-        prometheus.io/scrape: true
-        prometheus.io/port: 5000
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "5000"
         prometheus.io/path: "/metrics"
 
     spec:
       serviceAccountName: word-count
       containers:
         - name: word-count
-          image: "word-count:0.0.4"
+          image: "word-count:0.0.5"
           imagePullPolicy: "IfNotPresent"
           args:
             ["--yaml", "/etc/config/uwsgi-dynamic.yaml"]
           env:
-            #FLASK_RUN_HOST
             - name: UWSGI_SOCKET 
               valueFrom:
                 fieldRef:
@@ -108,7 +107,7 @@ spec:
             - name: PROMETHEUS_PATH
               valueFrom:
                 fieldRef:
-                  fieldPath: metadata.annotations['prometheus.io/path']
+                  fieldPath: "metadata.annotations['prometheus.io/path']"
           ports:
             - containerPort: 5000
               name: main
