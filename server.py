@@ -7,11 +7,12 @@ import time
 
 import lib
 
+METRICS_PATH = os.getenv('PROMETHEUS_PATH', '/metrics')
 
 app = Flask(__name__)
 # run Prometheus metric server
 app.wsgi_app = DispatcherMiddleware(app.wsgi_app, {
-    '/metrics': make_wsgi_app()
+   METRICS_PATH : make_wsgi_app()
 })
 
 FILE_FORM_FIELD = os.environ.get('FILE_FORM_FIELD', 'data')
