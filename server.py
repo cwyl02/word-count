@@ -6,6 +6,7 @@ from prometheus_client import make_wsgi_app
 import time
 
 import lib
+import monitor
 
 METRICS_PATH = os.getenv('PROMETHEUS_PATH', '/metrics')
 
@@ -28,5 +29,6 @@ def count_words_from_upload():
     if uploaded_file.filename != '':
         response['wordCount'] = lib.calculate(uploaded_file)
         response['fileName'] = uploaded_file.filename
-        
+    
+    monitor.REQUEST_COUNT.inc()
     return response

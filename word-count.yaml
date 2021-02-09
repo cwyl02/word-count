@@ -76,10 +76,7 @@ spec:
       app: word-count
   replicas: 1
   strategy:
-    rollingUpdate:
-      maxSurge: 25%
-      maxUnavailable: 25%
-    type: RollingUpdate
+    type: Recreate
   template:
     metadata:
       labels:
@@ -131,8 +128,8 @@ spec:
             successThreshold: 1
           resources:
             requests:
-              cpu: "50m"
-              memory: "128Mi"
+              cpu: "100m"
+              memory: "256Mi"
             limits:
               cpu: "768m"
               memory: "1024Mi"
@@ -145,3 +142,28 @@ spec:
         - name: config-volume
           configMap:
             name: word-count
+---
+apiVersion: autoscaling/v2beta2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: word-count
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: word-count
+  minReplicas: 1
+  maxReplicas: 10
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: 50
+  - type: Resource
+    resource:
+      name: memory 
+      target:
+        type: AverageValue 
+        averageValue: 768Mi
