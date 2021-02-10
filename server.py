@@ -15,6 +15,8 @@ app = Flask(__name__)
 app.wsgi_app = DispatcherMiddleware(app.wsgi_app, {
    METRICS_PATH : make_wsgi_app()
 })
+app.before_request(monitor.before_request)
+app.after_request(monitor.after_request)
 
 FILE_FORM_FIELD = os.environ.get('FILE_FORM_FIELD', 'data')
 
@@ -22,7 +24,6 @@ FILE_FORM_FIELD = os.environ.get('FILE_FORM_FIELD', 'data')
 def index():
     return "please use POST to feed me the file"
 
-@monitor.REQUEST_TIME.time()
 @app.route('/', methods=['POST'])
 def count_words_from_upload():
     uploaded_file = request.files[FILE_FORM_FIELD]
@@ -31,5 +32,5 @@ def count_words_from_upload():
         response['wordCount'] = lib.calculate(uploaded_file)
         response['fileName'] = uploaded_file.filename
     
-    monitor.REQUEST_COUNT.inc()
+    monitor.FILES_COUNTED.labels(response['fileName'], response['wordCount']).inc()
     return response

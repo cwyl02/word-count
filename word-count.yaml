@@ -77,6 +77,11 @@ spec:
   replicas: 1
   strategy:
     type: Recreate
+    # uncomment this and comment above to use rolling update
+    # type: RollingUpdate
+    #   rollingUpdate:
+    #     maxSurge: 25%
+    #     maxUnavailable: 25% 
   template:
     metadata:
       labels:
@@ -85,7 +90,6 @@ spec:
         prometheus.io/scrape: "true"
         prometheus.io/port: "5000"
         prometheus.io/path: "/metrics"
-
     spec:
       serviceAccountName: word-count
       containers:
