@@ -10,7 +10,6 @@ An extremely useful little program helps you count number of words in a file
 - will deploy to `default` namespace -- not addressing k8s namespace here
 
 # Run unit tests
-
 ```bash
 # locally
 python3 -m unittest discover ./tests -p "*_tests.py"
@@ -52,11 +51,25 @@ kubectl apply -f word-count.yaml
 5. run the `Deploy` step
 
 # Scale
+Horizontal Pod Autoscaler definition included but commented out. Please see comments in word-count.yaml
+
+To scale via kubectl:
 ```bash
 # scale to 88 replicas, make sure you of enough worker nodes!
 kubectl scale --replicas=88 deployment/word-count
 ```
 
 # Monitor
-- The application is monitored using Prometheus client, which comes with out-of-the-box metrics for python-related and process related metrics
-   - 
+- The application is monitored using Prometheus client, which comes with out-of-the-box and self-defined(in `monitor.py`) metrics
+- Metrics might be interesting:
+    - application metrics:
+        - up
+        - request_count
+        - files_counted
+        - request_processing_seconds
+    - resource metrics:
+        - process_cpu_seconds_total
+        - process_resident_memory_bytes
+        - process_open_fds
+    ...
+- TODO: alerting, if Prometheus Alertmanager is deployed, might get some alerting about this app for free(e.g., if you have an alerting rule set up for the `up` metric)

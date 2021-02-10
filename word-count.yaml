@@ -76,12 +76,12 @@ spec:
       app: word-count
   replicas: 1
   strategy:
-    type: Recreate
-    # uncomment this and comment above to use rolling update
-    # type: RollingUpdate
-    #   rollingUpdate:
-    #     maxSurge: 25%
-    #     maxUnavailable: 25% 
+    # uncomment this and comment Rolling Update to use HPA
+    # type: Recreate
+    type: RollingUpdate
+      rollingUpdate:
+        maxSurge: 25%
+        maxUnavailable: 25% 
   template:
     metadata:
       labels:
@@ -94,7 +94,7 @@ spec:
       serviceAccountName: word-count
       containers:
         - name: word-count
-          image: "word-count:0.0.5"
+          image: "word-count:0.0.1"
           imagePullPolicy: "IfNotPresent"
           args:
             ["--yaml", "/etc/config/uwsgi-dynamic.yaml"]
@@ -146,28 +146,29 @@ spec:
         - name: config-volume
           configMap:
             name: word-count
----
-apiVersion: autoscaling/v2beta2
-kind: HorizontalPodAutoscaler
-metadata:
-  name: word-count
-spec:
-  scaleTargetRef:
-    apiVersion: apps/v1
-    kind: Deployment
-    name: word-count
-  minReplicas: 1
-  maxReplicas: 10
-  metrics:
-  - type: Resource
-    resource:
-      name: cpu
-      target:
-        type: Utilization
-        averageUtilization: 50
-  - type: Resource
-    resource:
-      name: memory 
-      target:
-        type: AverageValue 
-        averageValue: 768Mi
+# also change deployment strategy to use HPA
+# ---
+# apiVersion: autoscaling/v2beta2
+# kind: HorizontalPodAutoscaler
+# metadata:
+#   name: word-count
+# spec:
+#   scaleTargetRef:
+#     apiVersion: apps/v1
+#     kind: Deployment
+#     name: word-count
+#   minReplicas: 1
+#   maxReplicas: 10
+#   metrics:
+#   - type: Resource
+#     resource:
+#       name: cpu
+#       target:
+#         type: Utilization
+#         averageUtilization: 50
+#   - type: Resource
+#     resource:
+#       name: memory 
+#       target:
+#         type: AverageValue 
+#         averageValue: 768Mi
