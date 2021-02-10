@@ -22,6 +22,7 @@ FILE_FORM_FIELD = os.environ.get('FILE_FORM_FIELD', 'data')
 def index():
     return "please use POST to feed me the file"
 
+@monitor.REQUEST_TIME.time()
 @app.route('/', methods=['POST'])
 def count_words_from_upload():
     uploaded_file = request.files[FILE_FORM_FIELD]
